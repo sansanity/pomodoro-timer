@@ -1,12 +1,14 @@
 package main;
-import java.util.Timer;
+import javax.swing.Timer;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.util.Scanner;
 
 public class Main {
 
@@ -15,16 +17,17 @@ public class Main {
 	Font font1 = new Font("Times New Roman", Font.PLAIN, 60);
 	Timer timer;
 	int second, minute;
-	
 	DecimalFormat dFormat = new DecimalFormat("00");
-	
-	String ddSecond, ddMinute
+	String ddSecond, ddMinute;
+	JButton button;
+
 	
 	public static void main(String[] args) {
 		
 		new Main();
 		
 	}
+
 		// Creating a separate window
 		public Main() {
 			
@@ -38,19 +41,25 @@ public class Main {
 			counterLabel.setHorizontalAlignment(JLabel.CENTER); // Moves the text to the centre
 			counterLabel.setFont(font1);
 			
+			// Creating the button
+			button = new JButton("Start the Timer");
+			button.setBounds(325, 325, 150, 80);	
+			
+			
 			window.add(counterLabel);
 			window.setVisible(true);
+			window.add(button);
 			
-			// Initializing Countdown Timer
-			counterLabel.setText("3:00");
+			// Initializing Countdown Timer for the 25 minute timer
+			counterLabel.setText("25:00");
 			second = 0;
-			minute = 0;
-			countdown();
+			minute = 25;
+			countDown();
 			timer.start();
 			
 		}
 		
-		
+		// Creating the countdown timer
 		public void countDown() {
 			
 			timer = new Timer(1000, new ActionListener() {
@@ -73,11 +82,20 @@ public class Main {
 					}
 				}
 			});
+			
 		}
 		
 		
 		
+		// Linking the button press with the activation of the timer
+		static class Action implements ActionListener{
+			public void actionHere(ActionEvent e) {
+				
+			}
+			
+		}
 		
+		 
 		// Set a 25 minute timer
 		// After the 25 minute timer, automatically starts a 5 minute break timer. Plays a sound afterwards
 		// Add in a pause function
