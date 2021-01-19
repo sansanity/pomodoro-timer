@@ -14,12 +14,15 @@ public class Main {
 
 	JFrame window;
 	JLabel counterLabel;
+	JLabel workLabel;
 	Font font1 = new Font("Times New Roman", Font.PLAIN, 60);
 	Timer timer;
+	Timer break_timer;
 	int second, minute;
 	DecimalFormat dFormat = new DecimalFormat("00");
 	String ddSecond, ddMinute;
 	JButton button;
+	int timer_counter;
 
 	
 	public static void main(String[] args) {
@@ -41,21 +44,42 @@ public class Main {
 			counterLabel.setHorizontalAlignment(JLabel.CENTER); // Moves the text to the centre
 			counterLabel.setFont(font1);
 			
+			workLabel = new JLabel("Do work now");
+			workLabel.setBounds(300, 150, 200, 100);
+			workLabel.setHorizontalAlignment(JLabel.CENTER);
+			
+			
+			
 			// Creating the button
-			button = new JButton("Start the Timer");
-			button.setBounds(325, 325, 150, 80);	
+			button = new JButton("Start/Stop your 25m Timer");
+			button.setBounds(250, 325, 300, 150);
+			timer_counter = 0;
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// Implementing the start and stop timer function
+					timer_counter++;
+					
+					if (timer_counter % 2 != 0) {
+						timer.start();
+				} 
+				
+					else {
+						timer.stop();
+					}
+					
+				}});
 			
 			
 			window.add(counterLabel);
+			window.add(workLabel);
 			window.setVisible(true);
 			window.add(button);
 			
 			// Initializing Countdown Timer for the 25 minute timer
-			counterLabel.setText("25:00");
-			second = 0;
-			minute = 25;
+			counterLabel.setText("0:01");
+			second = 1;
+			minute = 0;
 			countDown();
-			timer.start();
 			
 		}
 		
@@ -78,23 +102,40 @@ public class Main {
 					}
 					
 					if (minute == 0 && second == 0) {
-						timer.stop();
-					}
+						System.out.println("hello");
+						
+						// Redefine the timer? The timer object does not manage to move onto the nested if statements
+						minute = 0;
+						second = 3;
+//						minute --;
+						ddSecond = dFormat.format(second);
+						ddMinute = dFormat.format(minute);
+						counterLabel.setText(ddMinute + ":" + ddSecond); // Sets the label text;
+						workLabel.setText("Rest now");
+						if(second == -1) {
+							System.out.println("world");
+							second = 59;
+							minute --;
+							ddSecond = dFormat.format(second);
+							ddMinute = dFormat.format(minute);
+							counterLabel.setText(ddMinute + ":" + ddSecond); // Sets the label text
+//							timer.restart();
+						}
+						else if (minute == 0 && second == 0) {
+							timer.stop();
+						}
+						
+						};
+							
 				}
 			});
 			
 		}
 		
 		
-		
-		// Linking the button press with the activation of the timer
-		static class Action implements ActionListener{
-			public void actionHere(ActionEvent e) {
-				
-			}
-			
-		}
-		
+		// To do list: Make the on screen message change depending on whether it's work or break time
+		// Include a reset button
+	
 		 
 		// Set a 25 minute timer
 		// After the 25 minute timer, automatically starts a 5 minute break timer. Plays a sound afterwards
